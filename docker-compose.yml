@@ -1,0 +1,140 @@
+version: '3.8'
+
+services:
+  # Main Backend Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+      - ENVIRONMENT=development
+    volumes:
+      - ./backend/uploads:/app/uploads
+      - ./backend/app:/app/app
+    depends_on:
+      - postgres
+    networks:
+      - sih-network
+    restart: unless-stopped
+
+  # Asset Mapping Backend Service  
+  asset-mapping-backend:
+    build:
+      context: ./asset-mapping-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8000"
+    environment:
+      - PYTHONPATH=/app
+      - ENVIRONMENT=development
+    volumes:
+      - ./asset-mapping-backend:/app
+    networks:
+      - sih-network
+    restart: unless-stopped
+
+  # Asset Mapping Frontend (React)
+  asset-mapping-frontend:
+    build:
+      context: ./asset-mapping-frontend
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:8001
+      - REACT_APP_MAIN_BACKEND_URL=http://localhost:8000
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./asset-mapping-frontend/src:/app/src
+      - ./asset-mapping-frontend/public:/app/public
+      - /app/node_modules
+    depends_on:
+      - asset-mapping-backend
+      - backend
+    networks:
+      - sih-network
+    restart: unless-stopped
+
+  # FRA Atlas System (Vite + React) - Enhanced WebGIS
+  fra-atlas-system:
+    build:
+      context: ./fra-atlas-system
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_BACKEND_URL=http://localhost:8000
+      - VITE_ASSET_BACKEND_URL=http://localhost:8001
+      - VITE_WEBGIS_ENABLED=true
+      - VITE_LEAFLET_TILES=https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
+    volumes:
+      - ./fra-atlas-system/src:/app/src
+      - ./fra-atlas-system/public:/app/public
+      - /app/node_modules
+    depends_on:
+      - backend
+      - asset-mapping-backend
+      - postgres
+    networks:
+      - sih-network
+    restart: unless-stopped
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=sih_db
+      - POSTGRES_USER=sih_user
+      - POSTGRES_PASSWORD=sih_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - sih-network
+    restart: unless-stopped
+
+  # Redis (for caching and session management)
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - sih-network
+    restart: unless-stopped
+
+  # Nginx Reverse Proxy
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker/nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - backend
+      - asset-mapping-backend
+      - asset-mapping-frontend
+      - fra-atlas-system
+    networks:
+      - sih-network
+    restart: unless-stopped
+
+networks:
+  sih-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
