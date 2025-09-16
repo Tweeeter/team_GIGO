@@ -33,13 +33,6 @@ A comprehensive Forest Rights Act (FRA) management platform featuring **advanced
 
 ## 🚀 Quick Start Guide
 
-### Option 1: Enhanced WebGIS (Recommended)
-```batch
-# Start complete WebGIS system with Docker
-start-docker-webgis.bat
-
-# Access Enhanced WebGIS at: http://localhost:5173/webgis
-```
 
 ### Option 2: Legacy Development Setup
 ```batch
