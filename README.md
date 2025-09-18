@@ -222,25 +222,5 @@ npm install
 - **Git**: `git --version`
 - **Pip**: `pip --version`
 
-## 🤝 **Contributing**
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Open Pull Request
-
-## 📜 **License**
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 📞 **Support**
-
-If you encounter issues:
-1. Check the troubleshooting section above
-2. Ensure all prerequisites are installed
-3. Try manual setup method
-4. Open an issue on GitHub with error details
-
 ---
 **Built with ❤️ for Smart India Hackathon (SIH) 2024**
