@@ -1,118 +1,246 @@
-# 🌍 SIH Enhanced WebGIS Platform - Forest Rights Act Management System
+# 🌍 SIH Forest Rights Act (FRA) Management Platform
 
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://docker.com/)
 [![WebGIS](https://img.shields.io/badge/WebGIS-Enhanced-green.svg)](http://localhost:5173/webgis)
 [![React](https://img.shields.io/badge/React-18.x-61dafb.svg)](https://reactjs.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688.svg)](https://fastapi.tiangolo.com/)
-[![PostGIS](https://img.shields.io/badge/PostGIS-Enabled-336791.svg)](https://postgis.net/)
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org/)
 
 ## 🎯 Project Overview
 
-A comprehensive Forest Rights Act (FRA) management platform featuring **advanced WebGIS capabilities**, interactive mapping, asset detection, and analytics dashboard. Built for the Smart India Hackathon (SIH) to digitize and streamline FRA processes across India.
+A comprehensive **Forest Rights Act (FRA) Management Platform** featuring advanced WebGIS capabilities, AI-powered document processing, satellite asset mapping, and decision support systems. Built for the Smart India Hackathon (SIH) to digitize and streamline FRA processes across India.
 
-## 🌟 Key Features
+## 🚀 **Quick Start - Host Locally in 3 Steps**
 
-### ✅ **Interactive WebGIS System** 
-- 🗺️ **Leaflet-based Interactive Maps** with zoom, pan, and multi-layer support
-- 🎯 **IFR/CFR Claim Visualization** with color-coded status indicators
-- 🏗️ **Village Asset Mapping** with AI detection results and condition monitoring  
-- 🔍 **Advanced Filtering** by states, districts, villages, and tribal groups
-- 🎛️ **Real-time Layer Toggles** with visual feedback
+### **📋 Prerequisites (Install These First):**
+- **Windows 10/11** (Primary support)
+- **Python 3.8+** - [Download from python.org](https://www.python.org/downloads/)
+- **Node.js 16+** - [Download from nodejs.org](https://nodejs.org/en/download/)
+- **Git** - [Download from git-scm.com](https://git-scm.com/download/win)
 
-### ✅ **Comprehensive Analytics Dashboard**
-- 📊 **Multi-level Progress Tracking** (State → District → Block → Village)
-- 📈 **Interactive Charts** using Recharts (Bar, Pie, Line charts)
-- 📋 **Export Capabilities** - CSV (functional), PDF & Excel (ready)
-- 🎨 **Performance Metrics** with success rates and trends
+### **🔽 Step 1: Download the Project**
+```bash
+# Clone the repository
+git clone https://github.com/Tweeeter/team_GIGO.git
+cd team_GIGO
 
-### ✅ **Advanced AI & Detection**
-- 🤖 **OCR Processing** for document digitization
-- 🧠 **NER (Named Entity Recognition)** for information extraction
-- 🛰️ **Asset Detection** using AI and satellite imagery
-- 🏞️ **Land Use Classification** with confidence scoring
+# OR download ZIP from GitHub and extract
+```
 
-## 🚀 Quick Start Guide
-
-
-### Option 2: Legacy Development Setup
+### **⚙️ Step 2: Install Dependencies (Run Once)**
 ```batch
-# Install dependencies (run ONCE)
-install_dependencies.bat
-
-# Start all services
-start_all_services.bat
+# Double-click this file OR run in Command Prompt/PowerShell:
+install-all.bat
 ```
+**What this does:** Installs Python packages, Node.js dependencies, creates virtual environment
 
-### Option 3: Production Deployment
+### **🚀 Step 3: Start All Services**
 ```batch
-# Deploy to production
-deploy-production.bat
+# Double-click this file OR run in Command Prompt/PowerShell:
+start-all-local.bat
+```
+**What this does:** Starts all backend services and frontend applications
 
-# Health check all services  
-health-check.bat
+## 📱 **Access Your Local Application**
+
+After running `start-all-local.bat`, open these URLs in your browser:
+
+| Service | URL | Description |
+|---------|-----|-------------|
+| **🗺️ Main WebGIS Platform** | [http://localhost:5173](http://localhost:5173) | Interactive mapping & analytics |
+| **�️ WebGIS Maps** | [http://localhost:5173/webgis](http://localhost:5173/webgis) | Advanced mapping interface |
+| **🛰️ Asset Mapping** | [http://localhost:3000](http://localhost:3000) | Satellite image analysis |
+| **📡 API Documentation** | [http://localhost:8000/docs](http://localhost:8000/docs) | Backend API reference |
+| **🤖 DSS System** | [http://localhost:8000/api/dss](http://localhost:8000/api/dss) | Decision support APIs |
+
+## 🌟 **Key Features You Can Use**
+
+### **🗺️ Interactive WebGIS System**
+- **Leaflet-based Maps** with zoom, pan, multi-layer support
+- **IFR/CFR Claims Visualization** with color-coded status
+- **Village Asset Mapping** with AI detection results
+- **Advanced Filtering** by states, districts, villages
+- **Fullscreen Mode** for immersive mapping experience
+
+### **🤖 AI-Powered Document Processing**
+- **OCR Text Extraction** from uploaded documents
+- **NER Entity Recognition** for structured data
+- **Gemini AI Integration** for intelligent processing
+- **Batch Processing** support for multiple files
+
+### **🛰️ Satellite Asset Detection**
+- **Computer Vision Analysis** of satellite imagery  
+- **NDVI Vegetation Index** calculations
+- **Land Use Classification** with confidence scores
+- **Asset Detection** (roads, buildings, water bodies)
+
+### **📊 Analytics & Decision Support**
+- **Multi-level Progress Tracking** (State → District → Village)
+- **CSS Scheme Eligibility Assessment**
+- **Village Intervention Prioritization**
+- **Interactive Charts** and data visualization
+- **Export Capabilities** (CSV, PDF, Excel ready)
+
+## 🔧 **Manual Setup (Alternative Method)**
+
+If the automated scripts don't work, follow these manual steps:
+
+### **Backend Setup:**
+```bash
+# 1. Create Python virtual environment
+python -m venv .venv
+.venv\Scripts\activate
+
+# 2. Install Python dependencies
+cd backend
+pip install -r requirements.txt
+cd ..
+
+cd asset-mapping-backend  
+pip install -r requirements.txt
+cd ..
+
+# 3. Start backend services
+cd backend
+python main_dss.py
+# Keep this terminal open, open new terminal for next step
 ```
 
-## 🌐 Service URLs
+### **Frontend Setup:**
+```bash
+# 1. Install Node.js dependencies
+cd fra-atlas-system
+npm install
+npm run dev
+# Keep this terminal open, open new terminal for next step
 
-### **Enhanced WebGIS Access:**
-- **🗺️ Main WebGIS Interface**: http://localhost:5173/webgis
-- **📊 FRA Atlas Dashboard**: http://localhost:5173
-- **🏗️ Asset Mapping System**: http://localhost:3000
-- **🔧 API Documentation**: http://localhost:8000/docs
-
-### **Legacy Access:**
-- Asset Mapping API: http://localhost:8002
-- Digitization API: http://localhost:8000 
-
-## 🎮 WebGIS Features
-
-### **Interactive Map Controls:**
-- 🎯 **IFR/CFR Claims**: Green (Approved), Orange (Pending), Red (Rejected)
-- 🏗️ **Village Assets**: Schools, Water Infrastructure, Community Halls
-- 🔍 **Smart Filtering**: State → District → Village → Tribal Group
-- 🎛️ **Layer Management**: Toggle visibility with real-time indicators
-
-### **Analytics Dashboard:**
-- 📈 **Progress Charts**: Multi-level FRA implementation tracking
-- 📊 **Export Functions**: CSV download (working), PDF/Excel ready
-- 🎯 **Performance Metrics**: Success rates, completion trends
-- 🌍 **Geographic Analysis**: Regional comparison and insights
-
-### **AI-Powered Detection:**
-- Named Entity Recognition (NER)
-- Geographic coordinate detection
-- Interactive maps with Google Maps integration
-
-### Troubleshooting
-
-#### If services fail to start:
-1. Make sure Python and Node.js are installed
-2. Run `install_dependencies.bat` first
-3. Check that ports 3000, 5173, 8000, 8002 are not in use
-4. Ensure virtual environment exists at `.venv/`
-
-#### If tunnels don't work:
-1. Make sure all local services are running first
-2. Check tunnel windows for actual URLs
-3. Ensure internet connection is stable
-4. SSH must be available (usually pre-installed on Windows 10/11)
-
-### System Requirements
-- Windows 10/11
-- Python 3.8+
-- Node.js 16+
-- Git (for dependency installation)
-- Internet connection (for public tunnels)
-
-### File Structure
+# 2. Start asset mapping frontend
+cd asset-mapping-frontend
+npm install  
+npm run dev
 ```
-final sih coppro/
-├── install_dependencies.bat    # Install all modules
-├── start_all_services.bat     # Start all services  
-├── create_public_tunnels.bat  # Create internet tunnels
-├── backend/                   # Digitization backend
-├── asset-mapping-backend/     # Asset mapping backend
-├── asset-mapping-frontend/    # Asset mapping frontend
-├── fra-atlas-system/         # FRA digitization frontend
-└── .venv/                    # Python virtual environment
+
+## 🏗️ **System Architecture**
+
 ```
+┌─────────────────────────────────────────┐
+│             Frontend Layer              │
+├─────────────────────────────────────────┤
+│  🌐 FRA Atlas (Port 5173)              │
+│  🛰️ Asset Mapping (Port 3000)         │
+└─────────────────────────────────────────┘
+                    ↕ HTTP API
+┌─────────────────────────────────────────┐
+│             Backend Layer               │
+├─────────────────────────────────────────┤
+│  🚀 DSS Backend (Port 8000)            │
+│  🔍 Asset Mapping API (Port 8002)      │
+│  📄 Document Processing                 │
+│  🤖 AI Services (OCR, NER, Gemini)     │
+└─────────────────────────────────────────┘
+```
+
+## 📂 **Project Structure**
+```
+team_GIGO/
+├── 📁 backend/                    # Main FastAPI backend
+│   ├── main_dss.py               # DSS server entry point
+│   ├── requirements.txt          # Python dependencies
+│   └── app/                      # Application modules
+├── 📁 asset-mapping-backend/     # AI analysis backend
+├── 📁 asset-mapping-frontend/    # React asset mapping UI
+├── 📁 fra-atlas-system/          # Main React frontend
+│   ├── src/pages/WebGISPageSimple.tsx  # Main mapping page
+│   ├── src/components/           # Reusable components
+│   └── package.json              # Node.js dependencies
+├── � install-all.bat            # Auto-installer
+├── 🚀 start-all-local.bat        # Service launcher
+├── ⚙️ launcher.bat               # Alternative launcher
+└── 📋 README.md                  # This file
+```
+
+## 🌐 **Using the Application**
+
+### **1. WebGIS Mapping:**
+- Navigate to [http://localhost:5173/webgis](http://localhost:5173/webgis)
+- Use map controls to zoom and pan
+- Toggle layers (IFR Claims, CFR Claims, Assets, Boundaries)
+- Click **Fullscreen** button for immersive experience
+- Use filters to narrow down by state/district
+
+### **2. Document Processing:**
+- Go to FRA Data Management section
+- Upload PDF/image documents
+- View OCR extraction results
+- See NER entity recognition
+- Download structured data
+
+### **3. Asset Mapping:**
+- Visit [http://localhost:3000](http://localhost:3000)
+- Upload satellite images
+- View AI analysis results
+- Examine NDVI vegetation calculations
+- Export detection results
+
+## 🛠️ **Troubleshooting**
+
+### **Common Issues & Solutions:**
+
+#### **🚨 "Port already in use" Error:**
+```bash
+# Find and kill processes using ports
+netstat -ano | findstr :5173
+taskkill /PID <process_id> /F
+```
+
+#### **🚨 Python/Node.js not found:**
+- **Python**: Download from [python.org](https://python.org/downloads/)
+- **Node.js**: Download from [nodejs.org](https://nodejs.org/download/)
+- **Restart** Command Prompt after installation
+
+#### **🚨 Virtual environment issues:**
+```bash
+# Delete and recreate virtual environment
+rmdir /s .venv
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r backend/requirements.txt
+```
+
+#### **🚨 Frontend dependencies fail:**
+```bash
+# Clear npm cache and reinstall
+cd fra-atlas-system
+npm cache clean --force
+rmdir /s node_modules
+npm install
+```
+
+### **🔍 Verify Installation:**
+- **Python**: `python --version` (should show 3.8+)
+- **Node.js**: `node --version` (should show 16+)  
+- **Git**: `git --version`
+- **Pip**: `pip --version`
+
+## 🤝 **Contributing**
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open Pull Request
+
+## 📜 **License**
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📞 **Support**
+
+If you encounter issues:
+1. Check the troubleshooting section above
+2. Ensure all prerequisites are installed
+3. Try manual setup method
+4. Open an issue on GitHub with error details
+
+---
+**Built with ❤️ for Smart India Hackathon (SIH) 2024**
