@@ -48,9 +48,9 @@ const WebGISIntegrationPage: React.FC = () => {
   const filterOptions = {
     states: [
       { id: '1', name: 'Madhya Pradesh', code: 'MP' },
-      { id: '2', name: 'Chhattisgarh', code: 'CG' },
-      { id: '3', name: 'Jharkhand', code: 'JH' },
-      { id: '4', name: 'Odisha', code: 'OD' }
+      { id: '2', name: 'Tripura', code: 'TR' },
+      { id: '3', name: 'Odisha', code: 'OD' },
+      { id: '4', name: 'Telangana', code: 'TG' }
     ],
     districts: [
       { id: '101', name: 'Balaghat', state_id: '1' },

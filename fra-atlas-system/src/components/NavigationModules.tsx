@@ -28,6 +28,7 @@ const NavigationModules: React.FC<NavigationModulesProps> = ({
       'description': '📋',
       'map': moduleId === 'webgis-integration' ? '🌍' : '🗺️',
       'psychology': '🤖', 
+      'satellite': '🛰️',
       'analytics': '📊',
       'assessment': '📈',
       'adminpanelsettings': '⚙️'

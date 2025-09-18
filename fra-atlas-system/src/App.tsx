@@ -11,6 +11,7 @@ import HomePage from './pages/HomePage';
 import FRADataPage from './pages/FRADataPage';
 import AtlasPage from './pages/AtlasPage';
 import AIProcessingPage from './pages/AIProcessingPage';
+import AssetMappingPage from './pages/AssetMappingPage';
 import DSSPage from './pages/DSSPage';
 import AnalyticsPage from './pages/AnalyticsPage';
 import AdminPage from './pages/AdminPage';
@@ -65,6 +66,7 @@ function App() {
             <Route path="/atlas" element={<AtlasPage />} />
             <Route path="/webgis" element={<WebGISPage />} />
             <Route path="/ai-processing" element={<AIProcessingPage />} />
+            <Route path="/asset-mapping" element={<AssetMappingPage />} />
             <Route path="/dss" element={<DSSPage />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/admin" element={<AdminPage />} />

@@ -74,10 +74,9 @@ async def get_states():
     # Mock data - replace with actual database queries
     mock_states = [
         {"id": "1", "name": "Madhya Pradesh", "code": "MP", "population": 72597565, "forest_area": 77700},
-        {"id": "2", "name": "Chhattisgarh", "code": "CG", "population": 25540196, "forest_area": 55547},
+        {"id": "2", "name": "Tripura", "code": "TR", "population": 3673032, "forest_area": 8073},
         {"id": "3", "name": "Odisha", "code": "OR", "population": 42010000, "forest_area": 51619},
-        {"id": "4", "name": "Maharashtra", "code": "MH", "population": 112372972, "forest_area": 50778},
-        {"id": "5", "name": "Jharkhand", "code": "JH", "population": 32988134, "forest_area": 23605},
+        {"id": "4", "name": "Telangana", "code": "TG", "population": 35193978, "forest_area": 24295},
     ]
     return mock_states
 

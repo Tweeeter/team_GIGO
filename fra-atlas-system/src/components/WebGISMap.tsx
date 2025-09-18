@@ -66,14 +66,42 @@ const WebGISMap: React.FC<MapLayerProps> = ({
             type: 'Feature', 
             properties: {
               id: '2',
-              name: 'Chhattisgarh',
-              code: 'CG',
-              population: 25540196,
-              forest_area: 55547
+              name: 'Tripura',
+              code: 'TR',
+              population: 3673032,
+              forest_area: 8073
             },
             geometry: {
               type: 'MultiPolygon',
-              coordinates: [[[[80.0, 18.0], [84.0, 18.0], [84.0, 24.0], [80.0, 24.0], [80.0, 18.0]]]]
+              coordinates: [[[[91.0, 23.0], [92.5, 23.0], [92.5, 24.5], [91.0, 24.5], [91.0, 23.0]]]]
+            }
+          },
+          {
+            type: 'Feature', 
+            properties: {
+              id: '3',
+              name: 'Odisha',
+              code: 'OR',
+              population: 42009962,
+              forest_area: 51619
+            },
+            geometry: {
+              type: 'MultiPolygon',
+              coordinates: [[[[83.0, 17.5], [87.5, 17.5], [87.5, 22.5], [83.0, 22.5], [83.0, 17.5]]]]
+            }
+          },
+          {
+            type: 'Feature', 
+            properties: {
+              id: '4',
+              name: 'Telangana',
+              code: 'TG',
+              population: 35193978,
+              forest_area: 24295
+            },
+            geometry: {
+              type: 'MultiPolygon',
+              coordinates: [[[[77.0, 15.5], [81.0, 15.5], [81.0, 19.5], [77.0, 19.5], [77.0, 15.5]]]]
             }
           }
         ]

@@ -1,31 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
   Paper,
   Container,
   Button,
-  Alert,
-  Collapse,
-  IconButton,
-  Grid
+  Alert
 } from '@mui/material';
-import WebGISMap from '../components/WebGISMap';
-import SimpleMap from '../components/SimpleMap';
+import WebGISMapFixed from '../components/WebGISMapFixed';
+import BasicMap from '../components/BasicMap';
 import WebGISFilters from '../components/WebGISFilters';
 import FRAProgressDashboard from '../components/FRAProgressDashboard';
 
-// Test dynamic import approach
-const loadWebGISMap = async () => {
-  try {
-    const { default: WebGISMapComponent } = await import('../components/WebGISMap');
-    console.log('✅ WebGISMap component loaded successfully');
-    return WebGISMapComponent;
-  } catch (error) {
-    console.error('❌ Failed to load WebGISMap:', error);
-    return null;
-  }
-};
+// WebGIS Page with multiple map component options for testing
 
 const WebGISPage: React.FC = () => {
   console.log('WebGIS Page is loading successfully!');
@@ -34,6 +21,8 @@ const WebGISPage: React.FC = () => {
   const [mapKey, setMapKey] = useState(0);
   const [showFilters, setShowFilters] = useState(false);
   const [showDashboard, setShowDashboard] = useState(false);
+  const [mapComponent, setMapComponent] = useState<'basic' | 'webgis' | 'simple'>('basic');
+  const [isFullscreen, setIsFullscreen] = useState(false);
   
   // Filter state management
   const [filterValues, setFilterValues] = useState({
@@ -42,14 +31,15 @@ const WebGISPage: React.FC = () => {
     selectedTribalGroups: [],
     selectedClaimStatuses: [],
     selectedAssetTypes: [],
-    activeLayers: ['states', 'districts']
+    activeLayers: ['ifr', 'cfr', 'assets', 'boundaries']
   });
 
   const filterOptions = {
     states: [
       { id: '1', name: 'Madhya Pradesh', code: 'MP' },
-      { id: '2', name: 'Chhattisgarh', code: 'CG' },
-      { id: '3', name: 'Odisha', code: 'OR' }
+      { id: '2', name: 'Tripura', code: 'TR' },
+      { id: '3', name: 'Odisha', code: 'OR' },
+      { id: '4', name: 'Telangana', code: 'TG' }
     ],
     districts: [
       { id: '1', name: 'Bhopal', state_id: '1' },
@@ -67,15 +57,15 @@ const WebGISPage: React.FC = () => {
 
   const handleLoadMapTest = async () => {
     setMapLoadError(null);
+    if (showMapTest) {
+      setShowMapTest(false);
+      return;
+    }
+    
     try {
-      const MapComponent = await loadWebGISMap();
-      if (MapComponent) {
-        setMapKey(prev => prev + 1); // Force re-render with new key
-        setShowMapTest(true);
-        console.log('Map component ready to render');
-      } else {
-        setMapLoadError('Map component failed to load');
-      }
+      setMapKey(prev => prev + 1); // Force re-render with new key
+      setShowMapTest(true);
+      console.log(`Map component ready to render: ${mapComponent}`);
     } catch (error) {
       setMapLoadError(`Error: ${error}`);
     }
@@ -105,76 +95,176 @@ const WebGISPage: React.FC = () => {
     setShowDashboard(!showDashboard);
   };
 
-  return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h2" component="h1" gutterBottom align="center" color="primary">
-        🌍 WebGIS Integration System
-      </Typography>
+  // Handle fullscreen changes
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      const isNowFullscreen = !!document.fullscreenElement;
+      setIsFullscreen(isNowFullscreen);
       
-      <Typography variant="h5" align="center" sx={{ mb: 4, color: 'text.secondary' }}>
-        Complete Interactive Forest Rights Act Mapping & Analytics Platform
-      </Typography>
+      // Force map resize when fullscreen changes
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+      }, 100);
+    };
 
-      <Paper elevation={3} sx={{ p: 4, mb: 3, bgcolor: 'success.light' }}>
-        <Typography variant="h4" gutterBottom>
-          ✅ Success! WebGIS Page is Loading
-        </Typography>
-        <Typography variant="body1" sx={{ mb: 2 }}>
-          The WebGIS integration page is now accessible. This confirms that:
-        </Typography>
-        <Box component="ul" sx={{ pl: 2 }}>
-          <Typography component="li" variant="body2">✓ React routing is working correctly</Typography>
-          <Typography component="li" variant="body2">✓ Component imports are successful</Typography>
-          <Typography component="li" variant="body2">✓ Material-UI theming is applied</Typography>
-          <Typography component="li" variant="body2">✓ Basic page structure is rendering</Typography>
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isFullscreen) {
+        setIsFullscreen(false);
+      }
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('keydown', handleKeyPress);
+    
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [isFullscreen]);
+
+  return (
+    <Container maxWidth="lg" sx={{ py: isFullscreen ? 0 : 4 }}>
+      {!isFullscreen && (
+        <>
+          <Typography variant="h2" component="h1" gutterBottom align="center" color="primary">
+            🌍 WebGIS Integration System
+          </Typography>
+          
+          <Typography variant="h5" align="center" sx={{ mb: 4, color: 'text.secondary' }}>
+            Complete Interactive Forest Rights Act Mapping & Analytics Platform
+          </Typography>
+        </>
+      )}
+
+
+
+      <Paper elevation={3} sx={{ 
+        p: isFullscreen ? 0 : 3, 
+        mb: isFullscreen ? 0 : 3, 
+        display: showMapTest ? 'block' : 'none',
+        position: isFullscreen ? 'fixed' : 'relative',
+        top: isFullscreen ? 0 : 'auto',
+        left: isFullscreen ? 0 : 'auto',
+        width: isFullscreen ? '100vw' : 'auto',
+        height: isFullscreen ? '100vh' : 'auto',
+        zIndex: isFullscreen ? 9998 : 'auto'
+      }}>
+        {!isFullscreen && (
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+            <Typography variant="h6" color="primary">
+              🗺️ Interactive WebGIS Map
+            </Typography>
+            <Button
+              variant={isFullscreen ? "contained" : "outlined"}
+              size="small"
+            onClick={async () => {
+              try {
+                const mapContainer = document.getElementById('webgis-map-container');
+                if (!mapContainer) {
+                  console.error('Map container not found');
+                  return;
+                }
+
+                if (document.fullscreenElement) {
+                  await document.exitFullscreen();
+                } else {
+                  await mapContainer.requestFullscreen();
+                }
+                
+                // Force map resize after fullscreen change and re-render maps
+                setTimeout(() => {
+                  setMapKey(prev => prev + 1); // Force re-render of maps
+                  window.dispatchEvent(new Event('resize'));
+                  // Force invalidateSize on Leaflet maps
+                  const mapElements = mapContainer.getElementsByClassName('leaflet-container');
+                  Array.from(mapElements).forEach((element) => {
+                    const leafletMap = (element as any)?._leaflet_map;
+                    leafletMap?.invalidateSize?.();
+                  });
+                }, 200);
+              } catch (error) {
+                console.error('Fullscreen error:', error);
+                // Fallback for browsers that don't support fullscreen
+                const mapContainer = document.getElementById('webgis-map-container');
+                if (mapContainer) {
+                  if (isFullscreen) {
+                    mapContainer.style.position = 'relative';
+                    mapContainer.style.width = '100%';
+                    mapContainer.style.height = '500px';
+                    mapContainer.style.zIndex = 'auto';
+                    setIsFullscreen(false);
+                  } else {
+                    mapContainer.style.position = 'fixed';
+                    mapContainer.style.top = '0';
+                    mapContainer.style.left = '0';
+                    mapContainer.style.width = '100vw';
+                    mapContainer.style.height = '100vh';
+                    mapContainer.style.zIndex = '9999';
+                    mapContainer.style.backgroundColor = '#000';
+                    setIsFullscreen(true);
+                  }
+                }
+              }
+            }}
+            sx={{ minWidth: 'auto', px: 2 }}
+          >
+            {isFullscreen ? '🔲 Exit Fullscreen' : '⛶ Fullscreen'}
+          </Button>
+          </Box>
+        )}
+        <Box 
+          id="webgis-map-container"
+          sx={{ 
+            height: isFullscreen ? '100vh' : '500px',
+            width: isFullscreen ? '100vw' : '100%',
+            border: isFullscreen ? 'none' : '1px solid #ddd', 
+            borderRadius: isFullscreen ? 0 : 1, 
+            position: isFullscreen ? 'fixed' : 'relative',
+            top: isFullscreen ? 0 : 'auto',
+            left: isFullscreen ? 0 : 'auto',
+            zIndex: isFullscreen ? 9999 : 'auto',
+            backgroundColor: '#f5f5f5',
+            transition: 'all 0.3s ease',
+            overflow: 'hidden',
+            '&:fullscreen': {
+              height: '100vh !important',
+              width: '100vw !important',
+              borderRadius: '0 !important',
+              border: 'none !important',
+              backgroundColor: '#f5f5f5 !important',
+              padding: '0 !important',
+              margin: '0 !important',
+              position: 'fixed !important',
+              top: '0 !important',
+              left: '0 !important',
+              zIndex: '9999 !important',
+              overflow: 'hidden !important'
+            },
+            // Additional CSS for when container is programmatically fullscreen
+            ...(isFullscreen ? {
+              '& > *': {
+                height: '100% !important',
+                width: '100% !important'
+              }
+            } : {})
+          }}
+        >
+          {showMapTest && mapComponent === 'basic' && (
+            <BasicMap key={`${mapKey}-${isFullscreen}`} />
+          )}
+          {showMapTest && mapComponent === 'webgis' && (
+            <WebGISMapFixed 
+              key={`${mapKey}-${isFullscreen}`}
+              selectedState=""
+              selectedDistrict=""
+              activeLayers={filterValues.activeLayers}
+              onFeatureClick={(feature) => console.log('Feature clicked:', feature)}
+            />
+          )}
         </Box>
       </Paper>
 
-      <Paper elevation={2} sx={{ p: 3, mb: 3 }}>
-        <Typography variant="h6" gutterBottom color="success.main">
-          🗺️ Interactive Mapping Features ✅ IMPLEMENTED
-        </Typography>
-        <Typography variant="body2">
-          ✅ Leaflet-based interactive maps with zoom/pan controls<br/>
-          ✅ Multi-layer support (States, Districts, Villages, Claims)<br/>
-          ✅ IFR/CFR claim visualization with status indicators<br/>
-          ✅ Village asset mapping and detection results<br/>
-          ✅ Real-time filtering by administrative boundaries
-        </Typography>
-      </Paper>
-
-      <Paper elevation={2} sx={{ p: 3, mb: 3 }}>
-        <Typography variant="h6" gutterBottom color="success.main">
-          📊 FRA Progress Dashboard ✅ IMPLEMENTED
-        </Typography>
-        <Typography variant="body2">
-          ✅ Multi-level progress tracking (State → District → Block → Village)<br/>
-          ✅ Interactive charts and visualizations<br/>
-          ✅ Success rate analytics and performance metrics<br/>
-          ✅ Claim status distribution and trends<br/>
-          ✅ Export capabilities for reports (CSV, PDF, Excel)
-        </Typography>
-      </Paper>
-
-      <Paper elevation={3} sx={{ p: 3, mb: 3, display: showMapTest ? 'block' : 'none' }}>
-        <Typography variant="h6" gutterBottom color="primary">
-          🗺️ Interactive WebGIS Map
-        </Typography>
-        <Box sx={{ height: '500px', border: '1px solid #ddd', borderRadius: 1, position: 'relative' }}>
-          {showMapTest && (
-            <SimpleMap key={mapKey} />
-          )}
-          {showMapTest && (
-            <Box sx={{ position: 'absolute', top: 10, right: 10, bgcolor: 'rgba(255,255,255,0.9)', p: 1, borderRadius: 1, fontSize: '0.8rem', zIndex: 1000 }}>
-              <Typography variant="caption">
-                Active Layers: {filterValues.activeLayers.join(', ') || 'None'}
-              </Typography>
-            </Box>
-          )}
-        </Box>
-      </Paper>
-
-      {showFilters && (
+      {showFilters && !isFullscreen && (
         <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
           <Typography variant="h6" gutterBottom color="primary">
             🔍 WebGIS Filters
@@ -188,7 +278,7 @@ const WebGISPage: React.FC = () => {
         </Paper>
       )}
 
-      {showDashboard && (
+      {showDashboard && !isFullscreen && (
         <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
           <Typography variant="h6" gutterBottom color="primary">
             📊 FRA Progress Dashboard
@@ -197,23 +287,58 @@ const WebGISPage: React.FC = () => {
         </Paper>
       )}
 
-      <Paper elevation={2} sx={{ p: 3, bgcolor: 'info.light' }}>
+      {!isFullscreen && (
+      <Paper elevation={2} sx={{ p: 3 }}>
         <Typography variant="h6" gutterBottom>
-          🔧 Development Status
-        </Typography>
-        <Typography variant="body2" sx={{ mb: 2 }}>
-          <strong>Current URL:</strong> {window.location.href}<br/>
-          <strong>Page Status:</strong> ✅ WebGIS Integration Complete<br/>
-          <strong>Features:</strong> Interactive Map ✓ | Advanced Filters ✓ | Progress Dashboard ✓<br/>
-          <strong>Status:</strong> Ready for Production
+          🔧 Map Controls
         </Typography>
         
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="subtitle2" gutterBottom>Map Type:</Typography>
+          <Button 
+            variant={mapComponent === 'basic' ? 'contained' : 'outlined'}
+            onClick={() => {
+              setMapComponent('basic');
+              setMapKey(prev => prev + 1);
+            }}
+            sx={{ mr: 1, mb: 1 }}
+            size="small"
+          >
+            Basic Map
+          </Button>
+          <Button 
+            variant={mapComponent === 'webgis' ? 'contained' : 'outlined'}
+            onClick={() => {
+              setMapComponent('webgis');
+              setMapKey(prev => prev + 1);
+            }}
+            sx={{ mr: 1, mb: 1 }}
+            size="small"
+          >
+            WebGIS Map
+          </Button>
+        </Box>
+
         <Button 
           variant="contained" 
           onClick={handleLoadMapTest}
           sx={{ mr: 2 }}
+          color={showMapTest ? 'secondary' : 'primary'}
         >
-          Test Load Map Component
+          {showMapTest ? 'Hide Map' : 'Load Map'} ({mapComponent})
+        </Button>
+
+        <Button 
+          variant="outlined"
+          color="secondary"
+          onClick={() => {
+            setShowMapTest(false);
+            setMapKey(prev => prev + 1);
+            setMapLoadError(null);
+          }}
+          sx={{ mr: 2 }}
+        >
+          Reset Map
         </Button>
 
         <Button 
@@ -225,7 +350,7 @@ const WebGISPage: React.FC = () => {
         </Button>
 
         <Button 
-          variant="outlined" 
+          variant="outlined"
           color="secondary"
           onClick={handleToggleDashboard}
           sx={{ mr: 2 }}
@@ -233,7 +358,20 @@ const WebGISPage: React.FC = () => {
           {showDashboard ? 'Hide' : 'Show'} Dashboard
         </Button>
 
-        {mapLoadError && (
+        <Button 
+          variant="outlined"
+          size="small"
+          onClick={() => {
+            console.log('Fullscreen test:');
+            console.log('- Current fullscreen state:', isFullscreen);
+            console.log('- Document fullscreen element:', !!document.fullscreenElement);
+            console.log('- Map container exists:', !!document.getElementById('webgis-map-container'));
+            console.log('- Fullscreen API available:', !!document.documentElement.requestFullscreen);
+          }}
+          sx={{ mr: 2 }}
+        >
+          🔍 Test Fullscreen
+        </Button>        {mapLoadError && (
           <Alert severity="error" sx={{ mt: 2 }}>
             <Typography variant="body2">
               <strong>Error:</strong> {mapLoadError}
@@ -241,13 +379,7 @@ const WebGISPage: React.FC = () => {
           </Alert>
         )}
 
-        <Collapse in={showMapTest}>
-          <Alert severity="success" sx={{ mt: 2 }}>
-            <Typography variant="body2">
-              ✅ Map component successfully loaded! The issue was not with the map component itself.
-            </Typography>
-          </Alert>
-        </Collapse>
+
 
         {!showMapTest && !mapLoadError && (
           <Alert severity="info" sx={{ mt: 2 }}>
@@ -257,6 +389,7 @@ const WebGISPage: React.FC = () => {
           </Alert>
         )}
       </Paper>
+      )}
     </Container>
   );
 };

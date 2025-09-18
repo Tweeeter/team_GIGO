@@ -20,8 +20,8 @@ Patta Holder: Rajesh Kumar Singh
 Claim Status: Approved
 Land Area: 2.5 acres
 Survey Number: 123/1
-District: Udaipur
-State: Rajasthan
+District: Bhopal
+State: Madhya Pradesh
 Issue Date: 15/08/2024
 Authority: Forest Department, Udaipur
 

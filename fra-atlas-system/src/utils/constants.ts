@@ -12,7 +12,7 @@ export const navigationModules: NavigationModule[] = [
   },
   {
     id: 'atlas-mapping',
-    title: 'FRA Atlas & Mapping',
+    title: 'FRA Atlas & Mapping (Coming Soon)',
     description: 'Basic Atlas Interface, Government Scheme Integration, Regional Mapping',
     icon: 'Map',
     route: '/atlas',
@@ -30,12 +30,21 @@ export const navigationModules: NavigationModule[] = [
   },
   {
     id: 'ai-processing',
-    title: 'AI Processing Center',
+    title: 'AI Processing Center (Coming Soon)',
     description: 'OCR Document Processing, Satellite Image Analysis, Asset Detection Results',
     icon: 'Psychology',
     route: '/ai-processing',
     color: '#f57c00',
     userRoles: ['ministry', 'admin']
+  },
+  {
+    id: 'asset-mapping',
+    title: 'Asset Mapping & Detection',
+    description: 'AI-Powered Satellite Asset Detection, Land Cover Analysis, Infrastructure Mapping',
+    icon: 'Satellite',
+    route: '/asset-mapping',
+    color: '#ff5722',
+    userRoles: ['ministry', 'district', 'forest', 'admin']
   },
   {
     id: 'decision-support',
@@ -48,7 +57,7 @@ export const navigationModules: NavigationModule[] = [
   },
   {
     id: 'analytics-reports',
-    title: 'Analytics & Reports',
+    title: 'Analytics & Reports (Coming Soon)',
     description: 'State-wise Progress, District-level Statistics, Implementation Dashboards',
     icon: 'Assessment',
     route: '/analytics',
@@ -57,7 +66,7 @@ export const navigationModules: NavigationModule[] = [
   },
   {
     id: 'admin-panel',
-    title: 'Admin Panel',
+    title: 'Admin Panel (Coming Soon)',
     description: 'User Management, System Configuration, Data Import/Export',
     icon: 'AdminPanelSettings',
     route: '/admin',

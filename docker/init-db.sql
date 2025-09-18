@@ -248,10 +248,9 @@ CREATE INDEX IF NOT EXISTS idx_land_use_geom ON land_use_layers USING GIST(geom)
 -- Sample states
 INSERT INTO states (name, code, population, forest_area) VALUES 
 ('Madhya Pradesh', 'MP', 72597565, 77700),
-('Chhattisgarh', 'CG', 25540196, 55547),
+('Tripura', 'TR', 3673917, 8073),
 ('Odisha', 'OR', 42010000, 51619),
-('Maharashtra', 'MH', 112372972, 50778),
-('Jharkhand', 'JH', 32988134, 23605)
+('Telangana', 'TG', 35003674, 26904)
 ON CONFLICT (code) DO NOTHING;
 
 -- Sample tribal groups
